@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ประวัติวันปีใหม่</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&family=Trirong:wght@600;800&display=swap">
+<style>
+/* Concept: a 3-minute museum-style film on parchment. Flat vector scenes, ink outlines, one timeline strip at the bottom. Single sepia look by choice. */
+:root{
+  --paper:#efe3c8; --paper2:#e3d2ad; --ink:#2b2118; --rust:#a4472b; --teal:#2f6b66; --gold:#c9972e;
+  --display:'Trirong','Noto Serif Thai','Loma',serif; --body:'Sarabun','Noto Sans Thai','Loma',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+h1{font-family:var(--display);font-size:1.15rem;margin:0;letter-spacing:.02em;text-wrap:balance}
+.stage{position:relative;aspect-ratio:16/9;width:100%;background:var(--paper2);border:3px solid var(--ink);overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink)}
+.stage svg.art{position:absolute;inset:0;width:100%;height:100%}
+.year{position:absolute;left:3%;top:4%;font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,6vw,3.6rem);color:var(--rust);line-height:1;text-shadow:2px 2px 0 var(--paper)}
+.era{position:absolute;left:3%;top:calc(4% + clamp(2rem,7vw,4.2rem));font-family:var(--display);font-size:clamp(.85rem,2.2vw,1.35rem);background:var(--ink);color:var(--paper);padding:2px 10px}
+.sub{position:absolute;left:4%;right:4%;bottom:4%;background:rgba(43,33,24,.9);color:#fbf3df;padding:10px 14px;
+  font-size:clamp(.82rem,2.1vw,1.2rem);line-height:1.55;text-align:center;border-radius:2px}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button{font:inherit;font-weight:600;background:var(--ink);color:var(--paper);border:0;padding:8px 16px;cursor:pointer;min-height:40px}
+button:focus-visible{outline:3px solid var(--rust);outline-offset:2px}
+button.alt{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.time{font-variant-numeric:tabular-nums;font-weight:600;margin-left:auto}
+.track{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+.seg{height:34px;background:var(--paper2);border:2px solid var(--ink);cursor:pointer;position:relative;padding:0;min-height:0;color:var(--ink);font-size:.62rem;font-weight:600}
+.seg i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);opacity:.8}
+.seg span{position:relative}
+.seg.cur{border-color:var(--rust)}
+.note{font-size:.85rem;margin:0}
+@media(max-width:560px){.seg span{display:none}}
+/* art */
+.ink{stroke:var(--ink);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.fadein{opacity:0;animation:fi .9s ease forwards}
+.rise{opacity:0;transform:translateY(30px);animation:ri 1s ease forwards}
+.pulse{animation:pu 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.swing{animation:sw 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:top center}
+.draw{stroke-dasharray:600;stroke-dashoffset:600;animation:dr 3s ease forwards}
+.drift{animation:dri 7s linear infinite}
+.pop{opacity:0;transform:scale(.2);transform-box:fill-box;transform-origin:center;animation:po .5s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes fi{to{opacity:1}}@keyframes ri{to{opacity:1;transform:none}}
+@keyframes pu{50%{transform:scale(1.18)}}@keyframes sw{50%{transform:rotate(18deg)}0%,100%{transform:rotate(-10deg)}}
+@keyframes dr{to{stroke-dashoffset:0}}@keyframes dri{from{transform:translateY(-40px)}to{transform:translateY(520px)}}
+@keyframes po{to{opacity:1;transform:scale(1)}}
+.paused *{animation-play-state:paused!important}
+@media(prefers-reduced-motion:reduce){.pulse,.swing,.drift{animation:none}}
+</style>
+
+<div class="wrap">
+  <h1>ประวัติวันปีใหม่ จากบาบิโลนถึงวันนี้</h1>
+  <div class="stage" id="stage" aria-live="off">
+    <svg class="art" id="art" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" role="img" aria-label="ภาพประกอบประวัติศาสตร์วันปีใหม่"></svg>
+    <div class="year" id="year"></div><div class="era" id="era"></div>
+    <div class="sub" id="sub"></div>
+  </div>
+  <div class="track" id="track"></div>
+  <div class="bar">
+    <button id="play">▶ เริ่มเล่น</button>
+    <button id="restart" class="alt">เริ่มใหม่</button>
+    <button id="voice" class="alt" aria-pressed="true">เสียงบรรยาย: เปิด</button>
+    <span class="time" id="time">0:00 / 3:00</span>
+  </div>
+  <p class="note" id="note">กด “เริ่มเล่น” เพื่อดูแอนิเมชันความยาว 3 นาที เสียงบรรยายภาษาไทยใช้เสียงอ่านของเบราว์เซอร์ หากอุปกรณ์ไม่มีเสียงภาษาไทย ให้อ่านซับไตเติลด้านล่างภาพได้เลย</p>
+</div>
+
+<script>
+var C={ink:'var(--ink)',rust:'var(--rust)',teal:'var(--teal)',gold:'var(--gold)',paper:'var(--paper)'};
+function r(x,y,w,h,f,cls,extra){return '<rect class="ink '+(cls||'')+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+f+'" '+(extra||'')+'/>'}
+function c(x,y,rad,f,cls,extra){return '<circle class="ink '+(cls||'')+'" cx="'+x+'" cy="'+y+'" r="'+rad+'" fill="'+f+'" '+(extra||'')+'/>'}
+function t(x,y,s,size,f,cls,anchor){return '<text class="'+(cls||'')+'" x="'+x+'" y="'+y+'" font-size="'+size+'" fill="'+(f||C.ink)+'" text-anchor="'+(anchor||'middle')+'" style="font-family:var(--display);font-weight:800">'+s+'</text>'}
+function sky(col){return '<rect x="0" y="0" width="800" height="450" fill="'+col+'"/>'}
+function ground(y,col){return '<rect x="0" y="'+y+'" width="800" height="'+(450-y)+'" fill="'+col+'" stroke="var(--ink)" stroke-width="3"/>'}
+function chat(x,y,w,h,txt,f,cls,anchor){return '<g class="'+cls+'"><rect class="ink" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="10" fill="'+f+'"/>'+t(x+w/2,y+h/2+6,txt,18,C.ink,'',anchor)+'</g>'}
+
+var scenes=[
+{yr:'ราว 2000 ปีก่อน ค.ศ.',era:'บาบิโลน',
+ n:'เรื่องของวันปีใหม่เริ่มต้นที่เมโสโปเตเมีย ชาวบาบิโลนจัดเทศกาลอากีตู นาน 11 วัน เพื่อเฉลิมฉลองต้นปีในฤดูใบไม้ผลิ ช่วงที่ข้าวกล้าเริ่มงอกงามอีกครั้ง',
+ art:function(){var s=sky('#f0d9a0')+c(660,90,48,C.gold,'pulse')+ground(380,'#b9884f');
+ s+='<g class="rise">'+r(250,300,300,80,'#c58b4a')+r(290,240,220,60,'#b87a3a')+r(330,185,140,55,'#a96a30')+r(370,140,60,45,'#8f4f28')+'</g>';
+ s+='<g class="fadein" style="animation-delay:1.2s">'+r(60,340,20,40,'#6c8f5b')+r(100,330,20,50,'#6c8f5b')+r(140,345,20,35,'#6c8f5b')+r(620,340,20,40,'#6c8f5b')+r(660,330,20,50,'#6c8f5b')+'</g>';
+ s+='<g class="pop" style="animation-delay:2.2s">'+c(230,360,12,'#d9a77a')+r(218,372,24,30,C.rust)+c(570,360,12,'#d9a77a')+r(558,372,24,30,C.teal)+'</g>';return s}},
+{yr:'อียิปต์โบราณ',era:'น้ำหลากแม่น้ำไนล์',
+ n:'ชาวอียิปต์โบราณนับปีใหม่ตามฤดูน้ำหลากของแม่น้ำไนล์ ซึ่งมาพร้อมการปรากฏของดาวซิริอุสบนท้องฟ้า น้ำที่ท่วมนำตะกอนอุดมสมบูรณ์มาให้การเพาะปลูก',
+ art:function(){var s=sky('#2c3358');
+ s+='<path class="ink pulse" d="M600 60 l10 28 l30 2 l-24 18 l8 30 l-24 -17 l-24 17 l8 -30 l-24 -18 l30 -2z" fill="#f6d77a"/>';
+ s+=ground(330,'#d8b36a')+'<g class="rise"><path class="ink" d="M120 330 L260 150 L400 330Z" fill="#c9985a"/><path class="ink" d="M330 330 L430 210 L530 330Z" fill="#b98749"/></g>';
+ s+='<path class="ink" d="M0 390 Q100 360 200 390 T400 390 T600 390 T800 390 V450 H0Z" fill="#3f7f9a"/>';
+ s+='<g class="fadein" style="animation-delay:1.5s"><path class="ink" d="M0 415 Q100 395 200 415 T400 415 T600 415 T800 415" fill="none" stroke="#a9d2e0"/></g>';return s}},
+{yr:'กรุงโรม',era:'จากสิบเดือนสู่สิบสองเดือน',
+ n:'ในกรุงโรม ปฏิทินยุคแรกมีสิบเดือนและขึ้นปีใหม่เดือนมีนาคม ต่อมาเพิ่มเดือนมกราคมและกุมภาพันธ์ และเมื่อราว 153 ปีก่อนคริสตกาล ชาวโรมันเริ่มนับวันที่ 1 มกราคมเป็นต้นปี',
+ art:function(){var s=sky('#e8d3b0')+ground(390,'#a9946f');
+ s+='<g class="rise">'+r(60,120,40,270,'#f1e7d0')+r(50,100,60,24,'#d9c9a3')+r(700,120,40,270,'#f1e7d0')+r(690,100,60,24,'#d9c9a3')+'</g>';
+ for(var i=0;i<12;i++){var x=150+(i%6)*85,y=130+Math.floor(i/6)*100;s+='<g class="pop" style="animation-delay:'+(i*.35)+'s">'+r(x,y,72,80,i<2?C.gold:'#fbf3df')+t(x+36,y+48,i<2?(i?'II':'I'):''+(i+1),24,i<2?C.ink:C.rust)+'</g>'}
+ s+='<g class="fadein" style="animation-delay:5s">'+t(400,430,'153 ปีก่อน ค.ศ.',24,C.paper)+'</g>';return s}},
+{yr:'45 ปีก่อน ค.ศ.',era:'จูเลียส ซีซาร์และเทพเจนัส',
+ n:'ปี 45 ก่อนคริสตกาล จูเลียส ซีซาร์ ประกาศใช้ปฏิทินจูเลียน กำหนดให้ 1 มกราคมเป็นวันขึ้นปีใหม่ ชื่อเดือนมกราคมมาจากเจนัส เทพสองหน้าที่มองทั้งอดีตและอนาคต',
+ art:function(){var s=sky('#d7c3e0')+ground(390,'#8d7a9a');
+ s+='<g class="rise">'+r(250,120,300,270,'#f1e7d0')+'<path class="ink" d="M250 120 Q400 20 550 120" fill="#d9c9a3"/>'+r(350,230,100,160,'#5a3b24')+'</g>';
+ s+='<g class="pop" style="animation-delay:1.2s">'+c(400,190,42,'#e3b98e')+'<path class="ink" d="M372 170 l-14 18 l14 18 M428 170 l14 18 l-14 18" fill="#c99a6e"/><line class="ink" x1="400" y1="150" x2="400" y2="230"/></g>';
+ s+='<g class="fadein" style="animation-delay:2.5s">'+t(130,200,'อดีต',34,C.teal)+t(670,200,'อนาคต',34,C.rust)+'</g>';
+ s+='<g class="fadein" style="animation-delay:3.5s">'+t(400,430,'JANUARY = เจนัส',24,C.paper)+'</g>';return s}},
+{yr:'ยุคกลาง',era:'ปีใหม่หลายวัน',
+ n:'ในยุคกลาง ยุโรปไม่ได้ใช้วันเดียวกัน บางเมืองถือวันที่ 25 มีนาคม บางเมืองถือวันคริสต์มาส วันปีใหม่จึงสลับย้ายไปมาตามอำนาจของศาสนจักรและแคว้นต่างๆ',
+ art:function(){var s=sky('#cdd3c0')+ground(380,'#6f7f58');
+ ['25 มี.ค.','25 ธ.ค.','1 ม.ค.','1 ก.ย.'].forEach(function(d,i){var x=70+i*175;s+='<g class="rise" style="animation-delay:'+(i*.9)+'s">'+r(x,120,150,190,'#fbf3df')+r(x,120,150,40,[C.rust,C.teal,C.gold,'#6b4455'][i])+t(x+75,230,d,34,C.ink)+'</g>'});
+ s+='<g class="fadein" style="animation-delay:4.5s">'+t(400,425,'ไม่มีวันเดียวกัน',26,C.paper)+'</g>';return s}},
+{yr:'ค.ศ. 1582',era:'ปฏิทินเกรกอเรียน',
+ n:'ปี 1582 สมเด็จพระสันตะปาปาเกรกอรีที่ 13 ทรงประกาศปฏิทินใหม่ที่แม่นยำกว่าเดิม และให้นับวันที่ 1 มกราคมเป็นต้นปี ก่อนที่หลายประเทศจะทยอยใช้ตามมาในเวลาต่อมา',
+ art:function(){var s=sky('#e3d2ad')+ground(390,'#8c6b3f');
+ s+='<g class="rise">'+r(200,70,400,290,'#fbf3df')+r(180,60,24,310,'#d9c9a3')+r(596,60,24,310,'#d9c9a3')+'</g>';
+ for(var i=0;i<6;i++)s+='<line class="ink fadein" style="animation-delay:'+(1+i*.4)+'s;stroke-width:2" x1="240" y1="'+(120+i*30)+'" x2="'+(i%2?520:560)+'" y2="'+(120+i*30)+'"/>';
+ s+='<g class="pop" style="animation-delay:3.8s">'+c(540,310,30,C.rust)+t(540,320,'1582',16,C.paper)+'</g>';
+ s+='<g class="fadein" style="animation-delay:.6s">'+t(400,105,'ปฏิทินใหม่',30,C.rust)+'</g>';return s}},
+{yr:'ทั่วโลก',era:'ปีใหม่หลายวัฒนธรรม',
+ n:'แต่ทั่วโลกยังมีปีใหม่ของตัวเอง ตรุษจีนตามจันทรคติ นาวรูซของเปอร์เซียในวันฤดูใบไม้ผลิ และสงกรานต์ของไทยในเดือนเมษายน แต่ละแห่งมีความหมายและประเพณีต่างกัน',
+ art:function(){var s=sky('#e0d0a8')+ground(390,'#9b8658');
+ s+='<g class="rise">'+c(160,190,60,C.rust)+r(140,120,40,12,C.gold)+r(140,250,40,12,C.gold)+'<line class="ink" x1="160" y1="262" x2="160" y2="330"/>'+t(160,200,'福',44,C.gold)+'</g>';
+ s+='<g class="rise" style="animation-delay:1s">'+'<path class="ink" d="M360 330 q0 -70 40 -90 q40 20 40 90z" fill="#7aa06a"/>'+c(380,230,16,'#f6efe0')+c(420,230,16,'#e8a0b8')+c(400,200,16,'#f6d77a')+'</g>';
+ s+='<g class="rise" style="animation-delay:2s">'+'<path class="ink" d="M580 270 q0 70 80 70 q80 0 80 -70z" fill="#5b8c88"/>'+'</g>'+'<g class="fadein" style="animation-delay:3s">'+[0,1,2,3,4].map(function(i){return '<circle class="ink" cx="'+(600+i*32)+'" cy="'+(220-(i%2)*30)+'" r="9" fill="#a9d2e0"/>'}).join('')+'</g>';
+ s+=t(160,370,'ตรุษจีน',22,C.ink)+t(400,370,'นาวรูซ',22,C.ink)+t(660,370,'สงกรานต์',22,C.ink);return s}},
+{yr:'สมัยรัชกาลที่ 5',era:'ปีใหม่ไทย 1 เมษายน',
+ n:'ไทยเคยถือสงกรานต์กลางเดือนเมษายนเป็นวันขึ้นปีใหม่ ต่อมาในสมัยรัชกาลที่ 5 ทางราชการกำหนดให้ปีเริ่มต้นวันที่ 1 เมษายน เพื่อให้การบริหารและการนับปีเป็นระเบียบ',
+ art:function(){var s=sky('#f5dca8')+c(650,95,50,C.gold,'pulse')+ground(390,'#b58a4a');
+ s+='<g class="rise"><path class="ink" d="M300 390 L300 250 L340 250 L340 210 L370 210 L370 150 L400 70 L430 150 L430 210 L460 210 L460 250 L500 250 L500 390Z" fill="#f1e2b8"/></g>';
+ s+='<path class="ink" d="M395 70 L400 40 L405 70" fill="none" stroke="var(--gold)"/>';
+ s+='<g class="pop" style="animation-delay:1.5s">'+r(80,170,150,150,'#fbf3df')+r(80,170,150,40,C.rust)+t(155,280,'1 เม.ย.',34,C.ink)+'</g>';
+ s+='<g class="fadein" style="animation-delay:3s">'+'<path class="ink" d="M580 330 q0 40 70 40 q70 0 70 -40z" fill="#5b8c88"/>'+'</g>';return s}},
+{yr:'พ.ศ. 2484',era:'ขึ้นปีใหม่ 1 มกราคม',
+ n:'ปี พ.ศ. 2484 ประเทศไทยเปลี่ยนวันขึ้นปีใหม่เป็น 1 มกราคม ให้ตรงกับสากล ปีก่อนหน้านั้นจึงสั้นลงเหลือเก้าเดือน และคนไทยก็เริ่มนับวันที่ 1 มกราคมเป็นปีใหม่ตั้งแต่นั้นมา',
+ art:function(){var s=sky('#cfdde6')+ground(390,'#6b8a99');
+ s+='<g class="rise">'+r(100,120,200,200,'#fbf3df')+r(100,120,200,45,'#8a8a8a')+t(200,255,'เม.ย.',44,C.ink)+'</g>';
+ s+='<path class="ink draw" d="M330 220 L470 220 M440 195 L470 220 L440 245" fill="none" stroke="var(--rust)" stroke-width="10" style="animation-delay:1s"/>';
+ s+='<g class="pop" style="animation-delay:2.2s">'+r(500,120,200,200,'#fbf3df')+r(500,120,200,45,C.rust)+t(600,255,'1 ม.ค.',44,C.rust)+'</g>';
+ s+='<g class="fadein" style="animation-delay:3.6s">'+t(400,425,'ปี 2483 เหลือ 9 เดือน',24,C.paper)+'</g>';return s}},
+{yr:'ประเพณีวันปีใหม่',era:'ตักบาตร ส.ค.ส. และนับถอยหลัง',
+ n:'ผู้คนทำบุญตักบาตร ส่ง ส.ค.ส. อวยพรกัน ส่วนปี 1907 ที่ไทม์สแควร์ นิวยอร์ก ลูกบอลแสงลงมาเป็นครั้งแรกบอกเวลาเที่ยงคืน กลายเป็นพิธีนับถอยหลังที่คนทั่วโลกรู้จัก',
+ art:function(){var s=sky('#2a2f55')+ground(380,'#4a4466');
+ s+='<g class="rise">'+r(80,230,160,150,'#e8b84a')+c(160,205,26,'#d9a77a')+'<path class="ink" d="M115 300 q45 -20 90 0" fill="none"/>'+c(160,360,24,'#b9884f')+'</g>';
+ s+='<g class="rise" style="animation-delay:1s">'+r(300,230,120,90,'#fbf3df')+t(360,282,'ส.ค.ส.',26,C.rust)+'</g>';
+ s+=r(540,60,12,260,'#cdbf9c')+'<g class="drift" style="animation-duration:6s">'+c(546,60,26,'#f6efe0')+'</g>';
+ s+='<g class="fadein" style="animation-delay:3s">'+t(546,420,'1907',34,'#f6d77a')+'</g>';
+ [[620,140],[690,200],[700,110]].forEach(function(b,k){for(var a=0;a<10;a++){var an=a*Math.PI/5;s+='<line class="ink pop" x1="'+b[0]+'" y1="'+b[1]+'" x2="'+(b[0]+Math.cos(an)*30)+'" y2="'+(b[1]+Math.sin(an)*30)+'" style="stroke:#e8b84a;stroke-width:4;animation-delay:'+(4+k*.5)+'s"/>'}});return s}},
+{yr:'ทั่วโลก',era:'ปีใหม่เดินทางรอบโลก',
+ n:'ปีใหม่เดินทางรอบโลกใช้เวลาเกือบ 26 ชั่วโมง เริ่มจากหมู่เกาะในมหาสมุทรแปซิฟิกไปจนถึงเกาะสุดท้ายทางตะวันตก ขณะที่ไทยถึงเวลาเที่ยงคืนช้ากว่าที่แรกราวเจ็ดชั่วโมง',
+ art:function(){var s=sky('#1f2547')+c(400,225,150,'#4f88a8','')+'<path class="ink" d="M320 150 q40 -20 70 10 q15 40 -20 60 q-40 0 -50 -70z M420 240 q50 -20 70 20 q-10 50 -50 50 q-30 -30 -20 -70z" fill="#7aa06a"/>';
+ s+='<line class="ink drift" x1="250" y1="-100" x2="250" y2="550" style="stroke:#f6d77a;stroke-width:6;animation:none"/>';
+ s+='<g class="pop" style="animation-delay:.8s">'+c(190,120,12,'#f6d77a')+t(190,100,'+14',22,'#f6d77a')+'</g>';
+ s+='<g class="pop" style="animation-delay:2.5s">'+c(520,200,12,C.rust)+t(520,180,'ไทย +7',22,'#fbf3df')+'</g>';
+ s+='<g class="fadein" style="animation-delay:3.5s">'+t(400,425,'26 ชั่วโมงรอบโลก',26,'#fbf3df')+'</g>';return s}},
+{yr:'พ.ศ. 2570',era:'สวัสดีปีใหม่',
+ n:'จากเทศกาลฤดูใบไม้ผลิในบาบิโลน สู่การนับถอยหลังทั่วโลกในวันนี้ วันปีใหม่คือโอกาสที่มนุษย์หยุดมองย้อนกลับไป และตั้งใจเริ่มต้นใหม่ สวัสดีปีใหม่ 2570',
+ art:function(){var s=sky('#1f2547');[[170,120,'#e8b84a'],[400,80,'#e06a4a'],[630,130,'#5fb8b0'],[290,200,'#d98ac0'],[520,210,'#e8b84a']].forEach(function(b,k){for(var a=0;a<14;a++){var an=a*Math.PI/7;s+='<line class="ink pop" x1="'+b[0]+'" y1="'+b[1]+'" x2="'+(b[0]+Math.cos(an)*55)+'" y2="'+(b[1]+Math.sin(an)*55)+'" style="stroke:'+b[2]+';stroke-width:5;animation-delay:'+(k*.9)+'s"/>'}});
+ s+='<path class="ink" d="M0 340 Q200 300 400 340 T800 340 V450 H0Z" fill="#3d4a5a"/>';
+ s+='<g class="rise" style="animation-delay:1.5s">'+c(300,310,16,'#d9a77a')+r(284,326,32,50,'#44556b')+c(340,320,14,'#d9a77a')+r(326,334,28,42,'#6b4455')+'</g>';
+ s+='<g class="fadein" style="animation-delay:3s">'+t(400,262,'สวัสดีปีใหม่ 2570',46,'#f6d77a')+'</g>';return s}}
+];
+
+var DUR=15, TOTAL=DUR*scenes.length;
+var art=document.getElementById('art'),stage=document.getElementById('stage');
+var yearEl=document.getElementById('year'),eraEl=document.getElementById('era'),subEl=document.getElementById('sub');
+var playB=document.getElementById('play'),voiceB=document.getElementById('voice'),timeEl=document.getElementById('time'),track=document.getElementById('track');
+var cur=-1,playing=false,t0=0,elapsed=0,voiceOn=true,raf=0;
+
+scenes.forEach(function(s,i){var b=document.createElement('button');b.className='seg';b.id='seg'+i;b.innerHTML='<i></i><span>'+(i+1)+'</span>';b.title=s.yr;b.setAttribute('aria-label','ฉากที่ '+(i+1)+' '+s.yr);b.onclick=function(){seek(i*DUR)};track.appendChild(b)});
+
+function fmt(x){x=Math.floor(x);return Math.floor(x/60)+':'+('0'+x%60).slice(-2)}
+function getVoice(){try{var v=speechSynthesis.getVoices();for(var i=0;i<v.length;i++)if(/^th/i.test(v[i].lang))return v[i]}catch(e){}return null}
+function speak(txt){
+  try{speechSynthesis.cancel();if(!voiceOn||!playing)return;
+    var u=new SpeechSynthesisUtterance(txt);u.lang='th-TH';var v=getVoice();if(v)u.voice=v;u.rate=1.0;speechSynthesis.speak(u)}catch(e){}
+}
+function show(i){
+  cur=i;var s=scenes[i];art.innerHTML=s.art();
+  yearEl.textContent=s.yr;eraEl.textContent=s.era;subEl.textContent=s.n;
+  for(var k=0;k<scenes.length;k++)document.getElementById('seg'+k).classList.toggle('cur',k===i);
+  speak(s.n);
+}
+function tick(now){
+  if(!playing)return;
+  elapsed=(now-t0)/1000;
+  if(elapsed>=TOTAL){elapsed=TOTAL;finish();return}
+  var i=Math.min(scenes.length-1,Math.floor(elapsed/DUR));
+  if(i!==cur)show(i);
+  paint();raf=requestAnimationFrame(tick);
+}
+function paint(){
+  timeEl.textContent=fmt(elapsed)+' / '+fmt(TOTAL);
+  for(var k=0;k<scenes.length;k++){var f=Math.max(0,Math.min(1,(elapsed-k*DUR)/DUR));document.querySelector('#seg'+k+' i').style.width=(f*100)+'%'}
+}
+function play(){
+  if(elapsed>=TOTAL)elapsed=0;
+  playing=true;stage.classList.remove('paused');playB.textContent='⏸ หยุดชั่วคราว';
+  t0=performance.now()-elapsed*1000;
+  if(cur<0||cur!==Math.floor(elapsed/DUR))show(Math.min(scenes.length-1,Math.floor(elapsed/DUR)));
+  else{try{speechSynthesis.resume()}catch(e){}}
+  raf=requestAnimationFrame(tick);
+}
+function pause(){playing=false;stage.classList.add('paused');playB.textContent='▶ เล่นต่อ';cancelAnimationFrame(raf);try{speechSynthesis.pause()}catch(e){}}
+function finish(){playing=false;playB.textContent='▶ ดูอีกครั้ง';paint();try{speechSynthesis.cancel()}catch(e){}}
+function seek(sec){
+  elapsed=sec;cur=-1;
+  if(playing){t0=performance.now()-elapsed*1000;show(Math.floor(sec/DUR))}
+  else{show(Math.floor(sec/DUR));stage.classList.add('paused');paint();playB.textContent='▶ เริ่มเล่น'}
+}
+playB.onclick=function(){playing?pause():play()};
+document.getElementById('restart').onclick=function(){cancelAnimationFrame(raf);elapsed=0;cur=-1;play()};
+voiceB.onclick=function(){voiceOn=!voiceOn;voiceB.textContent='เสียงบรรยาย: '+(voiceOn?'เปิด':'ปิด');voiceB.setAttribute('aria-pressed',voiceOn);if(!voiceOn){try{speechSynthesis.cancel()}catch(e){}}else if(playing)speak(scenes[cur].n)};
+try{speechSynthesis.onvoiceschanged=function(){if(!getVoice())document.getElementById('note').textContent='อุปกรณ์นี้ยังไม่มีเสียงอ่านภาษาไทย ให้อ่านซับไตเติลประกอบภาพ หรือเพิ่มเสียงไทยในการตั้งค่าระบบ'}}catch(e){}
+show(0);stage.classList.add('paused');paint();
+</script>
+
+</body></html>
